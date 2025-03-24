@@ -21,6 +21,11 @@
 
 <digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
+
+sample test case for exponentiation
+2 ^ 3 + 4 * 5 - 6
+10 / 2 + 3 ^ 2
+5 + 2 ^ 3 ^ 2 - 1
 """
 from enum import Enum
 from typing import Any, List, Optional
@@ -421,15 +426,6 @@ class Parser:
             return result
         self.error()
 
-    def exponentiaition(self) -> float:
-        result = self.atom()
-        
-        while self.current_token.type == TokenType.EXPONENTIATION:
-            self.eat(TokenType.EXPONENTIATION)
-            result = math.pow(result, self.factor())
-            
-        return result
-
     def factor(self) -> float:
         token = self.current_token
         if token.type == TokenType.PLUS:
@@ -438,7 +434,16 @@ class Parser:
         elif token.type == TokenType.MINUS:
             self.eat(TokenType.MINUS)
             return -self.factor()
-        return self.exponentiaition()
+        return self.exponentiation()
+
+    def exponentiation(self) -> float:
+        result = self.atom()
+        
+        while self.current_token.type == TokenType.EXPONENTIATION:
+            self.eat(TokenType.EXPONENTIATION)
+            result = math.pow(result, self.factor())
+            
+        return result
 
     def term(self) -> float:
         result = self.factor()
